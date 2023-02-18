@@ -23,8 +23,8 @@ fn test_full_run() -> Result<()> {
         &command_path,
         concat!(
             "#!/bin/sh\n",
-            "echo running command $0\n",
-            "echo running in \"$PWD\"\n",
+            "echo running command $(readlink -nf \"$0\")\n",
+            "echo running in $(readlink -nf \"$PWD\")\n",
             "echo args are $@\n",
             ">&2 echo hello from stderr\n"
         ),
