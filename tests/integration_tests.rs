@@ -23,8 +23,8 @@ fn test_full_run() -> Result<()> {
         &command_path,
         concat!(
             "#!/bin/sh\n",
-            "echo running command $0\n",
-            "echo running in \"$PWD\"\n",
+            "echo running command $(readlink -nf \"$0\")\n",
+            "echo running in $(readlink -nf \"$PWD\")\n",
             "echo args are $@\n",
             ">&2 echo hello from stderr\n"
         ),
@@ -32,8 +32,14 @@ fn test_full_run() -> Result<()> {
     fs::set_permissions(&command_path, Permissions::from_mode(0o755))?;
 
     let mut expected_stdout = String::new();
-    expected_stdout.push_str(&format!("running command {}\n", &command_path.display()));
-    expected_stdout.push_str(&format!("running in {}\n", &run_dir.display()));
+    expected_stdout.push_str(&format!(
+        "running command {}\n",
+        fs::canonicalize(&command_path)?.display()
+    ));
+    expected_stdout.push_str(&format!(
+        "running in {}\n",
+        fs::canonicalize(&run_dir)?.display()
+    ));
     expected_stdout.push_str("args are foo bar baz\n");
 
     Command::cargo_bin("cdo")?
@@ -79,7 +85,7 @@ fn test_pwd_command() -> Result<()> {
         .arg("pwd")
         .assert()
         .success()
-        .stdout(format!("{}\n", &run_dir.display()));
+        .stdout(format!("{}\n", fs::canonicalize(&run_dir)?.display()));
 
     Ok(())
 }
