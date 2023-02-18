@@ -1,0 +1,8 @@
+[package]
+name = "cdo"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.69"
+clap = { version = "4.1.6", features = ["derive"] }
