@@ -12,7 +12,6 @@ pub struct Cli {
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
-    println!("{:?}", &cli);
     env::set_current_dir(&cli.directory)
         .with_context(|| format!("Failed to change directory to {}", &cli.directory.display()))?;
 
