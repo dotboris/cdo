@@ -94,13 +94,7 @@ fn test_command_absolute_path() -> Result<()> {
     let bin_dir = workdir.path().join("bin");
     fs::create_dir(&bin_dir)?;
     let command_path = bin_dir.join("command-to-run");
-    fs::write(
-        &command_path,
-        concat!(
-            "#!/bin/sh\n",
-            "echo it works\n",
-        ),
-    )?;
+    fs::write(&command_path, concat!("#!/bin/sh\n", "echo it works\n",))?;
     fs::set_permissions(&command_path, Permissions::from_mode(0o755))?;
 
     Command::cargo_bin("cdo")?
@@ -109,6 +103,34 @@ fn test_command_absolute_path() -> Result<()> {
         .assert()
         .success()
         .stdout("it works\n");
+
+    Ok(())
+}
+
+#[test]
+fn test_pass_all_flags() -> Result<()> {
+    let workdir = tempfile::tempdir()?;
+
+    let run_dir = workdir.path().join("directory-to-run-in");
+    fs::create_dir(&run_dir)?;
+
+    Command::cargo_bin("cdo")?
+        .arg(&run_dir)
+        .arg("echo")
+        .args([
+            "--fi",
+            "--fo",
+            "--fum",
+            "--help",
+            "--version",
+            "-h",
+            "-V",
+            "--",
+            "--more-flags",
+        ])
+        .assert()
+        .success()
+        .stdout("--fi --fo --fum --help --version -h -V -- --more-flags\n");
 
     Ok(())
 }

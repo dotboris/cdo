@@ -11,7 +11,11 @@ pub struct Cli {
     #[arg(help = "The command to run")]
     command: String,
 
-    #[arg(help = "The arguments to pass to the command")]
+    #[arg(
+        trailing_var_arg = true,
+        allow_hyphen_values = true,
+        help = "The arguments to pass to the command"
+    )]
     args: Vec<String>,
 }
 
