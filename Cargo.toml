@@ -1,5 +1,6 @@
 [package]
 name = "cdo"
+description = "Runs a command in the given directory"
 version = "0.1.0"
 edition = "2021"
 

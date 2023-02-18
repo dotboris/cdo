@@ -2,11 +2,16 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use std::{env, os::unix::process::CommandExt, path::PathBuf, process::Command};
 
-#[derive(Parser, Debug)]
+#[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
+    #[arg(help = "The directory to run the command in")]
     directory: PathBuf,
+
+    #[arg(help = "The command to run")]
     command: String,
+
+    #[arg(help = "The arguments to pass to the command")]
     args: Vec<String>,
 }
 
