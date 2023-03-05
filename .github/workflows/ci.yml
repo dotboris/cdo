@@ -18,33 +18,19 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-      - uses: actions-rs/cargo@v1
-        with:
-          command: check
+      - run: rustup toolchain install stable --profile minimal
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo check
 
   fmt-check:
     name: cargo fmt --check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          components: rustfmt
-      - name: print rustfmt version
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --version
-      - uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check --color=always
+      - run: rustup toolchain install stable --profile minimal --component rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --version
+      - run: cargo fmt --all -- --check --color=always
 
   test-rust:
     name: cargo test
@@ -57,29 +43,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-      - uses: actions-rs/cargo@v1
-        with:
-          command: test
+      - run: rustup toolchain install stable --profile minimal
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build
+      - run: cargo test
 
   clippy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          components: clippy
-      - name: print clippy version
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --version
-      - uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --all-targets --all-features -- -D warnings
+      - run: rustup toolchain install stable --profile minimal --component clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo clippy --version
+      - run: cargo clippy --all-targets --all-features -- -D warnings
