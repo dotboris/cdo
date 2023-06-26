@@ -1,1 +1,6 @@
+# Where rust outputs stuff
 /target
+
+# Where nix outputs stuff
+/result
+/cdo
