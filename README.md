@@ -14,7 +14,9 @@ cdo path/to/some/dir my-command arg0 arg1 --flag --other-flag
 This will run `my-command arg0 arg1 --flag --other-flag` in the
 `path/to/some/dir` directory.
 
-## Install from source
+## Install
+
+### From source
 
 For this, you'll need rust installed. See <https://rustup.rs/>.
 
@@ -36,6 +38,29 @@ For this, you'll need rust installed. See <https://rustup.rs/>.
 
     This will vary depending on your operating system shell and system
     configuration.
+
+1. Verify that `cdo` is installed correctly
+
+    ```sh
+    cdo --help
+    ```
+
+### Nix flake
+
+This uses the [Nix Flakes](https://nixos.wiki/wiki/Flakes) system. You'll need
+to have that enabled.
+
+1. Install `cdo`
+
+    ```sh
+    # Install in profile
+    nix profile install github:dotboris/cdo
+    # Run in an ephemeral shell
+    nix shell github:dotboris/cdo
+    ```
+
+    There are many options for installing and using package in nix, this is a
+    sampling of common methods.
 
 1. Verify that `cdo` is installed correctly
 
