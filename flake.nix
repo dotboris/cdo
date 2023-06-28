@@ -2,8 +2,8 @@
   description = "Lets you run other commands in different directories.";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
-    rust-overlay.url = "github:oxalica/rust-overlay";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-23.05";
+    rust-overlay.url = "github:oxalica/rust-overlay/stable";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -22,7 +22,8 @@
           })
         ];
         pkgs = import nixpkgs { inherit system overlays; };
-      in {
+      in
+      {
         packages = {
           default = pkgs.rustPlatform.buildRustPackage {
             name = "cdo";
@@ -40,7 +41,7 @@
               # cargo-fmt rustdoc, rustfmt, and other tools.
               rustToolchain
               # To format this file (how meta)
-              nixfmt
+              nixpkgs-fmt
             ]) ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
               (with pkgs; [ libiconv ]);
           };

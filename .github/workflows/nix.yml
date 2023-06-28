@@ -38,4 +38,4 @@ jobs:
         with:
           # Helps avoid rate limiting
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      - run: find . -iname '*.nix' -print0 | xargs -0 -t nix develop -c nixfmt -c
+      - run: find . -iname '*.nix' -print0 | xargs -0 -t nix develop -c nixpkgs-fmt --check
