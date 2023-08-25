@@ -2,7 +2,7 @@
   description = "Lets you run other commands in different directories.";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     rust-overlay.url = "github:oxalica/rust-overlay/stable";
     flake-utils.url = "github:numtide/flake-utils";
   };
