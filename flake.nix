@@ -24,6 +24,10 @@
       commonArgs = {
         inherit src;
         strictDeps = true;
+        buildInputs = pkgs.lib.optionals pkgs.stdenv.isDarwin [
+          # Additional darwin specific inputs can be set here
+          pkgs.libiconv
+        ];
       };
       cargoArtifacts = craneLib.buildDepsOnly commonArgs;
       cdo = craneLib.buildPackage (commonArgs
