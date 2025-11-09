@@ -7,7 +7,7 @@ use std::{
 };
 
 use anyhow::Result;
-use assert_cmd::Command;
+use assert_cmd::{cargo, Command};
 
 #[test]
 fn test_full_run() -> Result<()> {
@@ -42,7 +42,7 @@ fn test_full_run() -> Result<()> {
     ));
     expected_stdout.push_str("args are foo bar baz\n");
 
-    Command::cargo_bin("cdo")?
+    Command::new(cargo::cargo_bin!("cdo"))
         .env("PATH", path_with(&[&bin_dir])?)
         .arg(&run_dir)
         .arg("command-to-run")
@@ -62,7 +62,7 @@ fn test_echo_command() -> Result<()> {
     let run_dir = workdir.path().join("directory-to-run-in");
     fs::create_dir(&run_dir)?;
 
-    Command::cargo_bin("cdo")?
+    Command::new(cargo::cargo_bin!("cdo"))
         .arg(&run_dir)
         .arg("echo")
         .args(["fi", "fo", "fum"])
@@ -80,7 +80,7 @@ fn test_pwd_command() -> Result<()> {
     let run_dir = workdir.path().join("directory-to-run-in");
     fs::create_dir(&run_dir)?;
 
-    Command::cargo_bin("cdo")?
+    Command::new(cargo::cargo_bin!("cdo"))
         .arg(&run_dir)
         .arg("pwd")
         .assert()
@@ -103,7 +103,7 @@ fn test_command_absolute_path() -> Result<()> {
     fs::write(&command_path, concat!("#!/bin/sh\n", "echo it works\n",))?;
     fs::set_permissions(&command_path, Permissions::from_mode(0o755))?;
 
-    Command::cargo_bin("cdo")?
+    Command::new(cargo::cargo_bin!("cdo"))
         .arg(&run_dir)
         .arg(&command_path)
         .assert()
@@ -120,7 +120,7 @@ fn test_pass_all_flags() -> Result<()> {
     let run_dir = workdir.path().join("directory-to-run-in");
     fs::create_dir(&run_dir)?;
 
-    Command::cargo_bin("cdo")?
+    Command::new(cargo::cargo_bin!("cdo"))
         .arg(&run_dir)
         .arg("echo")
         .args([
@@ -148,7 +148,7 @@ fn test_crash_when_command_not_found() -> Result<()> {
     let run_dir = workdir.path().join("directory-to-run-in");
     fs::create_dir(&run_dir)?;
 
-    Command::cargo_bin("cdo")?
+    Command::new(cargo::cargo_bin!("cdo"))
         .arg(&run_dir)
         .arg("command-that-does-not-exist")
         .assert()
@@ -159,7 +159,7 @@ fn test_crash_when_command_not_found() -> Result<()> {
 
 #[test]
 fn test_crash_when_directory_not_found() -> Result<()> {
-    Command::cargo_bin("cdo")?
+    Command::new(cargo::cargo_bin!("cdo"))
         .arg("dir-that-does-not-exist")
         .arg("echo")
         .args(["foo", "bar", "baz"])
@@ -176,7 +176,7 @@ fn test_crash_when_directory_is_file() -> Result<()> {
     let run_dir = workdir.path().join("directory-to-run-in");
     fs::write(&run_dir, "This is actually a file. HaHa!")?;
 
-    Command::cargo_bin("cdo")?
+    Command::new(cargo::cargo_bin!("cdo"))
         .arg(&run_dir)
         .arg("echo")
         .args(["foo", "bar", "baz"])
