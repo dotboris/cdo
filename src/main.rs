@@ -22,15 +22,15 @@ pub struct Cli {
 fn main() -> Result<()> {
     let cli = Cli::parse();
     env::set_current_dir(&cli.directory)
-        .with_context(|| format!("Failed to change directory to {}", &cli.directory.display()))?;
+        .with_context(|| format!("Failed to change directory to {}", cli.directory.display()))?;
 
     let error = Command::new(&cli.command).args(&cli.args).exec();
     Err(error).with_context(|| {
         format!(
             "Failed to execute {} with arguments {:?} in directory {}",
-            &cli.command,
-            &cli.args,
-            &cli.directory.display()
+            cli.command,
+            cli.args,
+            cli.directory.display()
         )
     })
 }
